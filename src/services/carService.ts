@@ -114,7 +114,9 @@ function fileToDataUri(file: File): Promise<string> {
 }
 
 /**
- * Upload a single image to Cloudinary via backend endpoint
+ * Upload a single image to Cloudinary:
+ * 1. Tries signed direct upload from browser to Cloudinary (fastest, zero Vercel payload limits).
+ * 2. Falls back to /api/upload if needed.
  */
 export async function uploadImageToCloudinary(file: File): Promise<ICloudinaryImage> {
   const validation = validateImageFile(file);
@@ -122,6 +124,46 @@ export async function uploadImageToCloudinary(file: File): Promise<ICloudinaryIm
     throw new Error(validation.error);
   }
 
+  // 1. Preferred: Cloudinary Signed Direct Upload from Browser
+  try {
+    const sigRes = await fetch(getApiUrl("/api/cloudinary-signature"));
+    if (sigRes.ok) {
+      const sigData = await sigRes.json();
+      if (sigData.success && sigData.data) {
+        const { signature, timestamp, apiKey, cloudName, folder } = sigData.data;
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("api_key", apiKey);
+        formData.append("timestamp", String(timestamp));
+        formData.append("signature", signature);
+        formData.append("folder", folder);
+
+        const cloudRes = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (cloudRes.ok) {
+          const cloudData = await cloudRes.json();
+          return {
+            url: cloudData.secure_url,
+            public_id: cloudData.public_id,
+          };
+        } else {
+          const errData = await cloudRes.json();
+          console.warn("Direct upload returned error, falling back:", errData);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Direct signed upload attempt failed, falling back to /api/upload:", err);
+  }
+
+  // 2. Fallback: Upload via /api/upload
   const dataUri = await fileToDataUri(file);
   const response = await fetch(getApiUrl("/api/upload"), {
     method: "POST",
@@ -158,8 +200,8 @@ export async function checkBackendHealth(): Promise<{
     const data = await res.json();
     return {
       connected: true,
-      database: data.database,
-      cloudinary: data.cloudinary,
+      database: data.database || "connected",
+      cloudinary: data.cloudinary || "configured",
     };
   } catch {
     return { connected: false, database: "unreachable", cloudinary: "unreachable" };
@@ -199,7 +241,8 @@ export async function fetchCarBySlug(slugOrId: string): Promise<CarItem | null> 
   if (!slugOrId) return null;
 
   try {
-    const response = await fetch(getApiUrl(`/api/cars/${encodeURIComponent(slugOrId)}`));
+    const url = getApiUrl(`/api/cars?slug=${encodeURIComponent(slugOrId)}`);
+    const response = await fetch(url);
     if (!response.ok) {
       if (response.status === 404) return null;
       throw new Error(`Failed to fetch car: ${response.statusText}`);
@@ -303,7 +346,6 @@ export async function updateCar(
       if (meta) {
         keptImages.push(meta);
       } else {
-        // Fallback for sample/external URLs
         keptImages.push({ url, public_id: "" });
       }
     }
@@ -326,6 +368,7 @@ export async function updateCar(
     const finalImages = [...keptImages, ...newlyUploaded];
 
     const payload = {
+      id: car.id,
       name: updatedFields.brand ?? car.brand,
       brand: updatedFields.brand ?? car.brand,
       model: updatedFields.model ?? car.model,
@@ -347,7 +390,7 @@ export async function updateCar(
       images: finalImages,
     };
 
-    const response = await fetch(getApiUrl(`/api/cars/${car.id}`), {
+    const response = await fetch(getApiUrl(`/api/cars?id=${encodeURIComponent(car.id)}`), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -371,7 +414,7 @@ export async function updateCar(
  * Delete a car from MongoDB and clean up its Cloudinary images
  */
 export async function deleteCar(car: CarItem): Promise<void> {
-  const response = await fetch(getApiUrl(`/api/cars/${car.id}`), {
+  const response = await fetch(getApiUrl(`/api/cars?id=${encodeURIComponent(car.id)}`), {
     method: "DELETE",
   });
 

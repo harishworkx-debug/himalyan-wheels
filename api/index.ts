@@ -1,3 +1,4 @@
-import app from "../server/app";
+export default function handler(_req: any, res: any) {
+  res.status(200).json({ name: "Himalyan Wheels API", status: "online" });
+}
 
-export default app;
