@@ -1,6 +1,6 @@
-import { connectDB, isDbConnected } from "../server/db";
-import { Car, ICarImage } from "../server/models/Car";
-import { deleteFromCloudinary } from "../server/cloudinary";
+import { connectDB, isDbConnected } from "./lib/db";
+import { Car, ICarImage } from "./lib/Car";
+import { deleteFromCloudinary } from "./lib/cloudinary";
 
 function generateSlug(brand: string, model: string, variant?: string, year?: number): string {
   const base = [brand, model, variant, year ? String(year) : ""]

@@ -1,5 +1,5 @@
-import { connectDB, isDbConnected } from "../server/db";
-import { isCloudinaryConfigured } from "../server/cloudinary";
+import { connectDB, isDbConnected } from "./lib/db";
+import { isCloudinaryConfigured } from "./lib/cloudinary";
 
 export default async function handler(req: any, res: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");

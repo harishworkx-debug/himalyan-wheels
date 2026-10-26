@@ -1,4 +1,4 @@
-import { uploadToCloudinary, isCloudinaryConfigured } from "../server/cloudinary";
+import { uploadToCloudinary, isCloudinaryConfigured } from "./lib/cloudinary";
 
 export const config = {
   api: {
