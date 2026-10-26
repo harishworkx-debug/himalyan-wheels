@@ -1,4 +1,4 @@
-import { uploadToCloudinary, isCloudinaryConfigured } from "./lib/cloudinary";
+import { uploadToCloudinary, isCloudinaryConfigured } from "./lib/cloudinary.js";
 
 
 export default async function handler(req: any, res: any) {
