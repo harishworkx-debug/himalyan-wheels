@@ -15,7 +15,22 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src/main.tsx", "src/App.tsx", "src/index.css", "src/data/cars.ts", "src/lib/whatsapp.ts"]
+  "include": [
+    "src/vite-env.d.ts",
+    "src/main.tsx",
+    "src/App.tsx",
+    "src/index.css",
+    "src/data/cars.ts",
+    "src/lib/whatsapp.ts",
+    "src/services/carService.ts",
+    "src/pages/AdminPanel.tsx",
+    "src/components/admin/CarFormModal.tsx",
+    "src/components/admin/DeleteCarDialog.tsx"
+  ]
 }

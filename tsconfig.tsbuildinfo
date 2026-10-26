@@ -1,1 +1,1 @@
-{"root":["./src/main.tsx","./src/App.tsx","./src/data/cars.ts","./src/lib/whatsapp.ts"],"version":"5.9.3"}
+{"root":["./src/vite-env.d.ts","./src/main.tsx","./src/app.tsx","./src/data/cars.ts","./src/lib/whatsapp.ts","./src/services/carservice.ts","./src/pages/adminpanel.tsx","./src/components/admin/carformmodal.tsx","./src/components/admin/deletecardialog.tsx"],"version":"5.9.3"}
