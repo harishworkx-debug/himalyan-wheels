@@ -1,10 +1,11 @@
-import placeholder from "@/assets/founders/placeholder.jpg";
+import nitinImg from "@/assets/founders/nitin-garg.png";
+import ramanImg from "@/assets/founders/raman-garg.png";
 import { Section, SectionHeading } from "./Section";
 import { Reveal } from "./Reveal";
 
 const founders = [
-  { name: "Nitin Garg", role: "Co-Founder" },
-  { name: "Raman Garg", role: "Co-Founder" },
+  { name: "Nitin Garg", role: "Co-Founder", image: nitinImg },
+  { name: "Raman Garg", role: "Co-Founder", image: ramanImg },
 ];
 
 export function FounderSection() {
@@ -22,11 +23,11 @@ export function FounderSection() {
             <div className="group overflow-hidden rounded-2xl border border-border bg-card text-center transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[var(--shadow-lift)]">
               <div className="relative aspect-[4/5] overflow-hidden bg-surface">
                 <img
-                  src={placeholder}
+                  src={f.image}
                   alt={`${f.name}, ${f.role} at Himalyan Wheels`}
                   loading="lazy"
                   decoding="async"
-                  className="size-full object-cover opacity-80 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
+                  className="size-full object-cover transition-all duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="p-6">

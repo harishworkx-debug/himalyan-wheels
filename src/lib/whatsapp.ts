@@ -1,6 +1,6 @@
-export const WHATSAPP_NUMBER = "918988080017";
-export const PHONE_PRIMARY = "+91 89880 80017";
-export const PHONE_SECONDARY = "+91 98054 27094";
+export const WHATSAPP_NUMBER = "919805427094";
+export const PHONE_PRIMARY = "+91 98054 27094";
+export const PHONE_SECONDARY = "+91 89880 80017";
 export const LOCATION = "Neri, Mamligh, Solan, Himachal Pradesh 173207, India";
 
 export const createWhatsAppUrl = (message: string): string => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;

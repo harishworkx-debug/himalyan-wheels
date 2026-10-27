@@ -80,7 +80,7 @@ const dealerSchema = {
   "@context": "https://schema.org",
   "@type": "AutoDealer",
   name: site.name,
-  telephone: "+91 89880 80017",
+  telephone: "+91 98054 27094",
   address: {
     "@type": "PostalAddress",
     streetAddress: site.address.street,

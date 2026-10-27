@@ -87,6 +87,14 @@ export function Footer() {
       <div className="hairline">
         <div className="shell flex flex-col gap-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Himalyan Wheels. All Rights Reserved.</p>
+          <a
+            href="https://www.techhim.online/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 transition-colors hover:text-primary"
+          >
+            Powered by <span className="font-semibold text-primary underline underline-offset-4 decoration-primary/50">TechHim Solutions</span>
+          </a>
           <div className="flex gap-6">
             <Link to="/privacy-policy" className="transition-colors hover:text-primary">
               Privacy Policy

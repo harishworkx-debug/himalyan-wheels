@@ -18,8 +18,8 @@ export const site = {
 } as const;
 
 export const phones = [
-  { display: "+91 89880 80017", tel: "+918988080017", wa: "918988080017" },
   { display: "+91 98054 27094", tel: "+919805427094", wa: "919805427094" },
+  { display: "+91 89880 80017", tel: "+918988080017", wa: "919805427094" },
 ] as const;
 
 export const primaryPhone = phones[0];

@@ -15,6 +15,7 @@ import {
   Gauge,
   Instagram,
   Landmark,
+  Maximize2,
   Menu,
   MessageCircle,
   Phone,
@@ -41,11 +42,11 @@ import {
   type CarItem,
 } from "./services/carService";
 import AdminPanel from "./pages/AdminPanel";
+import nitinGargImg from "./assets/founders/nitin-garg.png";
+import ramanGargImg from "./assets/founders/raman-garg.png";
 
 const heroImage =
   "https://images.pexels.com/photos/31574925/pexels-photo-31574925.jpeg?auto=compress&cs=tinysrgb&w=2000";
-const founderPlaceholder =
-  "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=900";
 
 const navItems = [
   ["Cars", "/cars"],
@@ -101,12 +102,12 @@ function Shell({ children }: { children: React.ReactNode }) {
   const isAdmin = pathname === "/admin-panel";
 
   return (
-    <>
+    <div className="relative min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-ink-950 text-white">
       <Navbar />
-      <main>{children}</main>
+      <main className="w-full max-w-full overflow-x-hidden">{children}</main>
       {!isAdmin && <FloatingContact />}
       <Footer />
-    </>
+    </div>
   );
 }
 
@@ -234,7 +235,7 @@ function FloatingContact() {
           <MessageCircle size={15} /> WhatsApp
         </a>
         <a
-          href="tel:+918988080017"
+          href="tel:+919805427094"
           className="flex items-center justify-center gap-2 py-3 text-[10px] font-bold uppercase tracking-widest text-white"
         >
           <Phone size={14} /> Call
@@ -284,10 +285,10 @@ function Footer() {
         <div>
           <p className="eyebrow mb-5">Visit Us</p>
           <p className="mb-4 text-sm leading-6 text-white/55">{LOCATION}</p>
-          <a href="tel:+918988080017" className="block text-sm text-white">
+          <a href="tel:+919805427094" className="block text-sm text-white">
             {PHONE_PRIMARY}
           </a>
-          <a href="tel:+919805427094" className="block text-sm text-white/55">
+          <a href="tel:+918988080017" className="block text-sm text-white/55">
             {PHONE_SECONDARY}
           </a>
           <div className="mt-5 flex gap-3">
@@ -303,8 +304,19 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-14 flex max-w-[1440px] flex-col justify-between gap-3 border-t border-white/10 pt-6 text-[10px] uppercase tracking-wider text-white/25 sm:flex-row">
-        <span>© 2026 Himalyan Wheels. All Rights Reserved.</span>
+      <div className="mx-auto mt-14 flex max-w-[1440px] flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-[10px] uppercase tracking-wider text-white/35 sm:flex-row">
+        <span>© {new Date().getFullYear()} Himalyan Wheels. All Rights Reserved.</span>
+        <a
+          href="https://www.techhim.online/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-white/50 transition hover:text-gold-400"
+        >
+          <span>Powered by</span>
+          <span className="font-semibold text-gold-400 underline underline-offset-4 decoration-gold-400/40 hover:text-gold-300">
+            TechHim Solutions
+          </span>
+        </a>
         <span>Solan · Himachal Pradesh</span>
       </div>
     </footer>
@@ -433,7 +445,7 @@ function Hero() {
               WhatsApp Us <MessageCircle size={15} />
             </Button>
             <a
-              href="tel:+918988080017"
+              href="tel:+919805427094"
               className="flex items-center gap-2 px-3 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/70 transition hover:text-white"
             >
               <Phone size={15} /> Call Now
@@ -816,7 +828,7 @@ function LocationSection() {
             <Button href={generalWhatsAppUrl()}>
               WhatsApp Us <MessageCircle size={15} />
             </Button>
-            <Button href="tel:+918988080017" variant="outline">
+            <Button href="tel:+919805427094" variant="outline">
               Call Now <Phone size={15} />
             </Button>
           </div>
@@ -868,15 +880,15 @@ function PageHero({
   image?: string;
 }) {
   return (
-    <section className="relative flex min-h-[500px] items-end overflow-hidden pb-16 pt-32">
+    <section className="relative flex min-h-[360px] sm:min-h-[460px] items-end overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-32 w-full max-w-full">
       <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-50" />
       <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/70 to-ink-950/30" />
-      <div className="relative mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <p className="eyebrow mb-5">{eyebrow}</p>
-        <h1 className="display max-w-4xl text-5xl font-medium leading-[1.02] sm:text-7xl">
+      <div className="relative mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12 min-w-0">
+        <p className="eyebrow mb-4 sm:mb-5">{eyebrow}</p>
+        <h1 className="display max-w-4xl text-3xl font-medium leading-[1.05] sm:text-5xl lg:text-7xl break-words">
           {title}
         </h1>
-        <p className="mt-6 max-w-xl text-sm leading-7 text-white/60">{copy}</p>
+        <p className="mt-4 sm:mt-6 max-w-xl text-xs sm:text-sm leading-6 sm:leading-7 text-white/60 break-words">{copy}</p>
       </div>
     </section>
   );
@@ -1030,10 +1042,46 @@ function CarDetailPage({ cars }: { cars: CarItem[] }) {
 
   const car = carFromList || asyncCar;
   const [activeImage, setActiveImage] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
     setActiveImage(0);
   }, [car?.id]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+      if (e.key === "ArrowLeft") setActiveImage((prev) => (prev + (car?.images?.length || 1) - 1) % (car?.images?.length || 1));
+      if (e.key === "ArrowRight") setActiveImage((prev) => (prev + 1) % (car?.images?.length || 1));
+    };
+    if (lightboxOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [lightboxOpen, car?.images?.length]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (diff > 45 && images.length > 1) {
+      setActiveImage((prev) => (prev + 1) % images.length);
+    } else if (diff < -45 && images.length > 1) {
+      setActiveImage((prev) => (prev + images.length - 1) % images.length);
+    }
+    setTouchStart(null);
+  };
 
   if (loadingAsync) {
     return (
@@ -1057,29 +1105,64 @@ function CarDetailPage({ cars }: { cars: CarItem[] }) {
         copy={car.description || "Carefully inspected pre-owned car with verified history."}
         image={images[0]}
       />
-      <section className="bg-ink-950 px-5 py-16 sm:px-8 lg:px-12">
-        <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-          <div>
-            <div className="relative aspect-[4/3] overflow-hidden bg-ink-900 border border-white/10">
+      <section className="bg-ink-950 px-4 py-10 sm:px-8 sm:py-16 lg:px-12 w-full max-w-full overflow-hidden">
+        <div className="mx-auto grid max-w-[1440px] gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="min-w-0">
+            <div
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              className="relative aspect-[4/3] sm:aspect-[16/10] md:aspect-[16/9] w-full overflow-hidden rounded-xl border border-white/10 bg-black/90 shadow-2xl flex items-center justify-center select-none"
+            >
+              {/* Ambient blurred backdrop so any aspect ratio fills the frame elegantly */}
+              <img
+                src={images[activeImage] || images[0]}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full object-cover blur-2xl opacity-35 scale-110 pointer-events-none"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+
+              {/* Main Car Photo - object-contain ensures the entire car is 100% visible, no cutting */}
               <img
                 src={images[activeImage] || images[0]}
                 alt={`${car.brand} ${car.model}`}
-                className="h-full w-full object-cover"
+                onClick={() => setLightboxOpen(true)}
+                className="relative z-10 max-h-full max-w-full object-contain cursor-zoom-in transition-all duration-300"
               />
+
+              {/* Image Counter Badge */}
+              {images.length > 1 && (
+                <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-full bg-black/75 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md border border-white/10">
+                  <span>{activeImage + 1}</span>
+                  <span className="text-white/40">/</span>
+                  <span>{images.length}</span>
+                </div>
+              )}
+
+              {/* Fullscreen Button */}
+              <button
+                onClick={() => setLightboxOpen(true)}
+                aria-label="View fullscreen photo"
+                className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-[11px] font-medium text-white/90 backdrop-blur-md border border-white/10 hover:bg-black/90 hover:text-gold-400 transition"
+              >
+                <Maximize2 size={13} />
+                <span className="hidden sm:inline">Fullscreen</span>
+              </button>
+
               {images.length > 1 && (
                 <>
                   <button
                     onClick={() =>
                       setActiveImage((activeImage + images.length - 1) % images.length)
                     }
-                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-3 text-white hover:bg-black/80 transition"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/65 p-2.5 text-white hover:bg-black/90 hover:text-gold-400 transition border border-white/10 backdrop-blur-sm"
                     aria-label="Previous photo"
                   >
                     <ChevronLeft size={18} />
                   </button>
                   <button
                     onClick={() => setActiveImage((activeImage + 1) % images.length)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-3 text-white hover:bg-black/80 transition"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 rounded-full bg-black/65 p-2.5 text-white hover:bg-black/90 hover:text-gold-400 transition border border-white/10 backdrop-blur-sm"
                     aria-label="Next photo"
                   >
                     <ChevronRight size={18} />
@@ -1087,16 +1170,17 @@ function CarDetailPage({ cars }: { cars: CarItem[] }) {
                 </>
               )}
             </div>
+
             {images.length > 1 && (
-              <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+              <div className="mt-3 flex gap-2.5 overflow-x-auto pb-2 pt-1 min-w-0">
                 {images.map((img, i) => (
                   <button
                     key={`${img}-${i}`}
                     onClick={() => setActiveImage(i)}
-                    className={`h-20 w-24 shrink-0 overflow-hidden border-2 transition ${
+                    className={`relative h-16 w-20 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border-2 bg-ink-900 transition-all ${
                       activeImage === i
-                        ? "border-gold-400"
-                        : "border-transparent opacity-60 hover:opacity-100"
+                        ? "border-gold-400 ring-2 ring-gold-400/30 scale-[1.02]"
+                        : "border-white/10 opacity-60 hover:opacity-100"
                     }`}
                   >
                     <img src={img} alt="" className="h-full w-full object-cover" />
@@ -1105,7 +1189,7 @@ function CarDetailPage({ cars }: { cars: CarItem[] }) {
               </div>
             )}
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="border-b border-white/10 pb-7">
               <div className="flex items-center gap-2">
                 <span
@@ -1167,7 +1251,7 @@ function CarDetailPage({ cars }: { cars: CarItem[] }) {
               >
                 WhatsApp Enquiry <MessageCircle size={15} />
               </Button>
-              <Button href="tel:+918988080017" variant="outline">
+              <Button href="tel:+919805427094" variant="outline">
                 Call Now <Phone size={15} />
               </Button>
             </div>
@@ -1185,6 +1269,64 @@ function CarDetailPage({ cars }: { cars: CarItem[] }) {
             </div>
           </div>
         </section>
+      )}
+
+      {/* Fullscreen Lightbox Modal */}
+      {lightboxOpen && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black/95 p-4 backdrop-blur-xl">
+          <div className="flex w-full max-w-6xl items-center justify-between py-2 text-white">
+            <span className="text-xs sm:text-sm font-semibold tracking-wide text-white/80">
+              {car.brand} {car.model} · Photo {activeImage + 1} of {images.length}
+            </span>
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="rounded-full bg-white/10 p-2.5 text-white hover:bg-white/20 hover:text-gold-400 transition"
+              aria-label="Close fullscreen"
+            >
+              <X size={20} />
+            </button>
+          </div>
+          <div className="relative flex flex-1 w-full max-w-6xl items-center justify-center overflow-hidden my-auto">
+            <img
+              src={images[activeImage] || images[0]}
+              alt={`${car.brand} ${car.model}`}
+              className="max-h-[75vh] sm:max-h-[82vh] max-w-full object-contain select-none"
+            />
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={() =>
+                    setActiveImage((activeImage + images.length - 1) % images.length)
+                  }
+                  className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/75 p-3 text-white hover:bg-black hover:text-gold-400 transition border border-white/20 backdrop-blur-md"
+                  aria-label="Previous photo"
+                >
+                  <ChevronLeft size={22} />
+                </button>
+                <button
+                  onClick={() => setActiveImage((activeImage + 1) % images.length)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/75 p-3 text-white hover:bg-black hover:text-gold-400 transition border border-white/20 backdrop-blur-md"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight size={22} />
+                </button>
+              </>
+            )}
+          </div>
+          <div className="flex gap-2 overflow-x-auto py-2 max-w-full min-w-0">
+            {images.map((img, i) => (
+              <button
+                key={`modal-${img}-${i}`}
+                onClick={() => setActiveImage(i)}
+                className={`h-12 w-16 sm:h-16 sm:w-24 shrink-0 overflow-hidden rounded-md border-2 transition ${
+                  activeImage === i ? "border-gold-400 opacity-100 ring-2 ring-gold-400/40" : "border-white/10 opacity-40 hover:opacity-80"
+                }`}
+              >
+                <img src={img} alt="" className="h-full w-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
       )}
     </>
   );
@@ -1412,22 +1554,22 @@ function AboutPage() {
             description="We believe the best dealership experience feels less like a transaction and more like good advice from someone who knows the road."
             light
           />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2">
             {[
-              ["Nitin Garg", "Co-Founder"],
-              ["Raman Garg", "Co-Founder"],
-            ].map(([name, role]) => (
-              <div key={name} className="group relative aspect-[4/5] overflow-hidden bg-ink-800">
+              { name: "Nitin Garg", role: "Co-Founder", image: nitinGargImg },
+              { name: "Raman Garg", role: "Co-Founder", image: ramanGargImg },
+            ].map(({ name, role, image }) => (
+              <div key={name} className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-ink-900 shadow-2xl border border-white/10">
                 <img
-                  src={founderPlaceholder}
-                  alt={`${name} placeholder portrait`}
-                  className="h-full w-full object-cover opacity-40 grayscale transition duration-700 group-hover:scale-105 group-hover:opacity-60"
+                  src={image}
+                  alt={`${name} — ${role} at Himalyan Wheels`}
+                  className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950 to-transparent" />
-                <div className="absolute bottom-7 left-7">
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/35 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
                   <p className="eyebrow">{role}</p>
-                  <h3 className="display mt-2 text-2xl text-white">{name}</h3>
-                  <p className="mt-2 text-xs text-white/45">Founder portrait coming soon</p>
+                  <h3 className="display mt-1.5 text-2xl font-medium text-white">{name}</h3>
+                  <p className="mt-1 text-xs text-white/60">Himalyan Wheels</p>
                 </div>
               </div>
             ))}
@@ -1454,7 +1596,7 @@ function ContactPage() {
           <div>
             <SectionHeading eyebrow="Contact us" title="Good questions deserve good answers." />
             <div className="mt-10 space-y-6 text-sm text-white/60">
-              <a href="tel:+918988080017" className="flex gap-4">
+              <a href="tel:+919805427094" className="flex gap-4">
                 <Phone className="text-gold-400" size={19} />
                 <span>
                   {PHONE_PRIMARY}
@@ -1462,7 +1604,7 @@ function ContactPage() {
                   <span className="text-white/40">Primary line</span>
                 </span>
               </a>
-              <a href="tel:+919805427094" className="flex gap-4">
+              <a href="tel:+918988080017" className="flex gap-4">
                 <Phone className="text-gold-400" size={19} />
                 <span>
                   {PHONE_SECONDARY}
